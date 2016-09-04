@@ -286,6 +286,8 @@ const SyncthingMenu = new Lang.Class({
     },
 
     _onSettingsChanged: function(settings, key) {
+        this.externalBrowser = Settings.get_boolean('external-browser');
+
         if (Settings.get_boolean('autoconfig')) {
             if (! this._configFileWatcher) {
                 this._onAutoConfigChanged(null);
@@ -339,7 +341,7 @@ const SyncthingMenu = new Lang.Class({
     },
 
     _onConfig: function(actor, event) {
-        if (this.baseURI.startsWith('http://')) {
+        if (!this.externalBrowser && this.baseURI.startsWith('http://')) {
             this._openWebView();
         } else {
             let launchContext = global.create_app_launch_context(event.get_time(), -1);
